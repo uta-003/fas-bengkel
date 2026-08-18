@@ -226,10 +226,9 @@ export default function InventoryPage() {
 
   // Auto sound warning ketika ada stok menipis (hanya sekali saat data loaded)
   useEffect(() => {
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     if (!loading && stokMenipis.length > 0 && !warnedLowStock && getSfxEnabled()) {
       sfx.warning()
-      setWarnedLowStock(true)
+      setWarnedLowStock(true) // eslint-disable-line react-hooks/set-state-in-effect
     }
   }, [loading, stokMenipis, warnedLowStock])
 
