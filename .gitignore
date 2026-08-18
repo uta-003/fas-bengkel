@@ -39,3 +39,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# debug files
+dev-server.log
+dev.log
+dev.err
+build.txt
+sidebar.txt
+sidebar_formatted.txt
+test.pdf
+verify-*.cjs

@@ -1,26 +1,229 @@
 @import "tailwindcss";
 
+/* ============================================================
+   Tema "Bengkel FAS" — Palet Warna
+   #540b0e  → maroon-900 (header/primary gelap)
+   #9e2a2b  → maroon-700 (aksi utama)
+   #e09f3e  → gold-500   (aksen / CTA)
+   #fff3b0  → cream-100  (latar hangat)
+   #335c67  → ocean-600  (info / masuk)
+   ============================================================ */
+@theme static {
+  --color-maroon-50: #fdf4f4;
+  --color-maroon-100: #fbe5e5;
+  --color-maroon-200: #f5cfcf;
+  --color-maroon-300: #edadad;
+  --color-maroon-400: #e27f80;
+  --color-maroon-500: #d55051;
+  --color-maroon-600: #c1393a;
+  --color-maroon-700: #9e2a2b;
+  --color-maroon-800: #742222;
+  --color-maroon-900: #540b0e;
+  --color-maroon-950: #390608;
+
+  --color-gold-100: #fff4d6;
+  --color-gold-200: #ffe7ab;
+  --color-gold-300: #f8d786;
+  --color-gold-400: #eec160;
+  --color-gold-500: #e09f3e;
+  --color-gold-600: #c9832a;
+  --color-gold-700: #a46720;
+
+  --color-cream-50: #fffef6;
+  --color-cream-100: #fff3b0;
+  --color-cream-200: #fde989;
+
+  --color-ocean-50: #eef6f8;
+  --color-ocean-100: #d6e8ed;
+  --color-ocean-200: #aed2da;
+  --color-ocean-300: #7fb3bf;
+  --color-ocean-400: #518d9c;
+  --color-ocean-500: #3d7280;
+  --color-ocean-600: #335c67;
+  --color-ocean-700: #2a4b54;
+  --color-ocean-800: #1f3941;
+  --color-ocean-900: #16292f;
+}
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #faf6ee;
+  --foreground: #2a1212;
+  --space-xxs: 0.25rem;
+  --space-xs: 0.5rem;
+  --space-sm: 0.75rem;
+  --space-md: 1rem;
+  --space-lg: 1.5rem;
+  --space-xl: 2rem;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  background:
+    radial-gradient(55rem 35rem at 112% -8%, rgba(224, 159, 62, 0.12), transparent 60%),
+    radial-gradient(45rem 30rem at -8% 108%, rgba(51, 92, 103, 0.1), transparent 60%),
+    radial-gradient(30rem 24rem at 50% 120%, rgba(158, 42, 43, 0.06), transparent 60%),
+    var(--background);
+  background-attachment: fixed;
+}
+
+::selection {
+  background: rgba(224, 159, 62, 0.35);
+}
+
+/* Scrollbar */
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
+*::-webkit-scrollbar-thumb {
+  background: #d9b98c;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+*::-webkit-scrollbar-thumb:hover {
+  background: #c9a069;
+  background-clip: content-box;
+}
+
+/* Animasi */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes shine-sweep {
+  from {
+    transform: translateX(-130%) skewX(-12deg);
+  }
+  to {
+    transform: translateX(240%) skewX(-12deg);
+  }
+}
+
+.anim-fade-up {
+  animation: fade-in-up 0.45s ease-out both;
+}
+.anim-pop {
+  animation: pop-in 0.25s ease-out both;
+}
+.anim-shine {
+  animation: shine-sweep 3.4s ease-in-out infinite;
+}
+
+/* Garis pemindai kamera (scan) */
+@keyframes scan-move {
+  0%,
+  100% {
+    top: 6%;
+  }
+  50% {
+    top: 90%;
+  }
+}
+.scan-line {
+  position: absolute;
+  top: 6%;
+  animation: scan-move 2.2s ease-in-out infinite;
+}
+
+/* ============================================================
+   Komponen desain yang dapat dipakai ulang
+   ============================================================ */
+@layer components {
+  .card {
+    @apply bg-white rounded-2xl border border-maroon-900/10 shadow-[0_1px_3px_rgba(84,11,14,0.06)]
+           transition-all duration-300;
+  }
+  .card:hover {
+    box-shadow: 0 12px 30px -8px rgba(84, 11, 14, 0.14);
+    transform: translateY(-1px);
+  }
+  .input {
+    @apply w-full px-3.5 py-2.5 text-sm text-maroon-950 bg-white border border-maroon-900/15 rounded-xl outline-none transition
+           placeholder:text-maroon-900/40 hover:border-maroon-900/30
+           focus:border-gold-500 focus:ring-2 focus:ring-gold-500/30;
+  }
+  .label {
+    @apply block text-sm font-semibold text-maroon-900 mb-1.5;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white
+           bg-gradient-to-b from-maroon-700 to-maroon-900 rounded-xl shadow-md shadow-maroon-900/25 transition-all
+           hover:from-maroon-600 hover:to-maroon-800 hover:-translate-y-px
+           active:scale-95 focus:outline-none focus:ring-2 focus:ring-maroon-700/40 disabled:opacity-50;
+  }
+  .btn-gold {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-maroon-950
+           bg-gradient-to-b from-gold-400 to-gold-600 rounded-xl shadow-md shadow-gold-700/25 transition-all
+           hover:from-gold-300 hover:to-gold-500 hover:-translate-y-px
+           active:scale-95 focus:outline-none focus:ring-2 focus:ring-gold-500/40 disabled:opacity-50;
+  }
+  .btn-ocean {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-semibold text-white
+           bg-gradient-to-b from-ocean-500 to-ocean-700 rounded-xl shadow-md shadow-ocean-800/25 transition-all
+           hover:from-ocean-400 hover:to-ocean-600 hover:-translate-y-px
+           active:scale-95 focus:outline-none focus:ring-2 focus:ring-ocean-600/40 disabled:opacity-50;
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-maroon-800
+           bg-maroon-900/5 rounded-xl transition-all
+           hover:bg-maroon-900/10 active:scale-95 focus:outline-none focus:ring-2 focus:ring-maroon-700/30;
+  }
+  .btn-danger {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-maroon-900
+           bg-maroon-100 rounded-xl transition-all
+           hover:bg-maroon-200 active:scale-95 focus:outline-none focus:ring-2 focus:ring-maroon-700/30;
+  }
+  .thead-th {
+    @apply px-5 py-3.5 text-left text-[11px] font-bold uppercase tracking-wider text-maroon-900/60;
+  }
+  .td {
+    @apply px-5 py-4 whitespace-nowrap text-sm;
+  }
+  .stat-chip {
+    @apply inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold;
+  }
+}
+/* Sidebar scrollable (konten panjang bisa digulir atas/bawah) */
+.sidebar-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+.sidebar-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+}
+.sidebar-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(233, 196, 106, 0.6);
 }
